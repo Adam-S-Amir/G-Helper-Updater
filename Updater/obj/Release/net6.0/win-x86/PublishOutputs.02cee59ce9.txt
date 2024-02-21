@@ -1,0 +1,2 @@
+C:\Users\night\OneDrive\GitHub\G-Helper-Updater\Updater\bin\Release\net6.0\publish\win-x86\Updater.pdb
+C:\Users\night\OneDrive\GitHub\G-Helper-Updater\Updater\bin\Release\net6.0\publish\win-x86\Updater.exe
