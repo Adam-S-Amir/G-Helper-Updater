@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Updater-Pre")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1e9d42f81fb685dcfb808edc1137291385d7ab47")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8d8ff1415b5f71b871a424302c64d0ca8ea21c3d")]
 [assembly: System.Reflection.AssemblyProductAttribute("Updater-Pre")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Updater-Pre")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

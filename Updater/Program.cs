@@ -14,6 +14,7 @@ class Program
 
         string owner = "seerge";
         string repo = "g-helper";
+        Console.WriteLine("Developed By: Adam Amir\n");
 
         CheckAdmin();
         KillProcess();

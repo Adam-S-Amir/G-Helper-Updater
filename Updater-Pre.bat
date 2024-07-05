@@ -1,6 +1,9 @@
 @echo off
 setlocal enabledelayedexpansion
 
+echo Developed by: Adam Amir
+echo.
+
 :: Check if running with administrator privileges
 NET SESSION >nul 2>&1
 if %errorlevel% neq 0 (
