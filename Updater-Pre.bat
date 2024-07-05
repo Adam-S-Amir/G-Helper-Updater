@@ -25,9 +25,9 @@ REM Check the errorlevel to determine if the process is found or not
 if %errorlevel% equ 0 (
     echo Process GHelper has been found.
 	echo Killing GHelper...
-) else (
+) || (
     echo Process GHelper has not been found.
-	pause
+	echo.
 )
 
 REM Kill the process
@@ -46,16 +46,34 @@ for /r "%destination_folder%" %%I in ("%file_name%") do (
 	if %errorlevel% equ 0 (
 		echo GHelper.exe has been found.
 		echo Deleting file...
-		del %%I
+		del %%~I
 		echo Deprecated file deleted successfully.
 		echo.
+		goto :quit_1
 	) else (
 		echo GHelper.exe has not been found.
-		pause
+		echo.
+		goto :quit_1
 	)
 )
 
-echo Fetching latest pre-release...
+:quit_1
+
+echo Searching for jq...
+
+REM Check if jqlang.jq is installed
+winget show jqlang.jq > nul 2>&1
+if %errorlevel% neq 0 (
+    REM jqlang.jq is not installed, install it
+	echo jq not found, please wait...
+    powershell -Command "winget install -e --id jqlang.jq"
+) else (
+    REM jqlang.jq is already installed
+    echo jq has already been installed.
+	echo.
+)
+
+echo Fetching latest GHelper pre-release...
 
 REM Replace 'owner' and 'repo' with the GitHub owner and repository name
 set owner=seerge
@@ -68,28 +86,15 @@ REM Use curl to fetch the JSON response from the URL
 for /f "tokens=*" %%a in ('curl -s "https://api.github.com/repos/seerge/g-helper/releases" ^| jq -r ".[0].tag_name"') do (
 	echo Latest pre-release found.
 	echo Downloading version "%%~a"...
-    goto :end
+    goto :quit_2
 )
 
-:end
+:quit_2
 
 echo Download successful.
 echo.
-echo Searching for jq...
-
-REM Check if jqlang.jq is installed
-winget show jqlang.jq > nul 2>&1
-if %errorlevel% neq 0 (
-    REM jqlang.jq is not installed, install it
-	echo jq not found, please wait...
-    powershell -Command "winget install -e --id jqlang.jq"
-) else (
-    REM jqlang.jq is already installed
-    echo jq has already been installed.
-	echo Extracting files from archive...
-	echo.
-)
-
+echo Extracting files from archive...
+echo -------------------------------------------------------------------------------
 REM Download the file
 curl -L -o "%destination_folder%\GHelper.zip" %download_url%
 
@@ -99,6 +104,7 @@ cd /d "%destination_folder%"
 REM Unzip the file, overwrite existing files
 powershell -command "Expand-Archive -Path '.\GHelper.zip' -DestinationPath '.\' -Force"
 
+echo -------------------------------------------------------------------------------
 echo.
 echo Archive extraction successful.
 echo Deleting archive...
@@ -107,8 +113,18 @@ REM Delete the zip file
 del "GHelper.zip" /q
 
 echo Archive deleted.
-
+echo.
+echo Launching GHelper.exe...
 REM Start GHelper.exe
 start "" "%destination_folder%\GHelper.exe"
 
-exit
+REM Check the error level after starting GHelper.exe
+if errorlevel 1 (
+    echo Failed to start GHelper.exe.
+    echo Press any key to exit.
+    pause > nul
+    exit /b 1
+)
+
+echo GHelper.exe started successfully.
+exit /b 0
